@@ -647,6 +647,26 @@ wl_iw_get_macaddr(
 	return error;
 }
 
+static int
+wl_iw_set_country_code(struct net_device *dev, char *ccode)
+{
+       char country_code[WLC_CNTRY_BUF_SZ];
+       int ret = -1;
+
+       WL_TRACE(("%s\n", __FUNCTION__));
+       if (!ccode)
+               ccode = dhd_bus_country_get(dev);
+       strncpy(country_code, ccode, sizeof(country_code));
+       if (ccode && (country_code[0] != 0)) {
+               ret = dev_wlc_ioctl(dev, WLC_SET_COUNTRY, &country_code, sizeof(country_code));
+               if (ret >= 0) {
+                       WL_TRACE(("%s: set country %s OK\n", __FUNCTION__, country_code));
+                       dhd_bus_country_set(dev, &country_code[0]);
+               }
+       }
+       return ret;
+}
+
 
 static int
 wl_iw_set_country(
@@ -672,22 +692,13 @@ wl_iw_set_country(
 	country_code_size = strlen(extra) - country_offset;
 
 	if (country_offset != 0) {
-		strncpy(country_code, extra + country_offset +1,
+		strncpy(country_code, extra + country_offset + 1,
 			MIN(country_code_size, sizeof(country_code)));
-
-
-		memcpy(cspec.country_abbrev, country_code, WLC_CNTRY_BUF_SZ);
-		memcpy(cspec.ccode, country_code, WLC_CNTRY_BUF_SZ);
-
-		get_customized_country_code((char *)&cspec.country_abbrev, &cspec);
-
-		if ((error = dev_iw_iovar_setbuf(dev, "country", &cspec, \
-			sizeof(cspec), smbuf, sizeof(smbuf))) >= 0) {
-			p += snprintf(p, MAX_WX_STRING, "OK");
-			WL_ERROR(("%s: set country for %s as %s rev %d is OK\n", \
-				__FUNCTION__, country_code, cspec.ccode, cspec.rev));
-			dhd_bus_country_set(dev, &cspec);
-			goto exit;
+		error = wl_iw_set_country_code(dev, country_code);
+		if (error >= 0) {
+		p += snprintf(p, MAX_WX_STRING, "OK");
+		WL_TRACE(("%s: set country %s OK\n", __FUNCTION__, country_code));
+		goto exit;
 		}
 	}
 
