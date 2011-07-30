@@ -461,15 +461,15 @@ static int battery_adjust_charge_state(struct ds2784_device_info *di)
 	 * (slowly draining to 95 and charging back
 	 * to 100)
 	 */
-	if (di->status.percentage < 99)  {
+	if (di->status.percentage < 95)  {
 		di->status.battery_full = 0;
 	}
 	if (enable_charge && (di->status.status_reg & 0x80) &&
-	((di->status.current_avg_uA/1000) <= 40) &&
-	(di->status.percentage == 100)) {	
+	((di->status.current_uA/1000) <= 80) &&
+	(di->status.percentage == 100)) {
 		di->status.battery_full = 1;
 		charge_mode = CHARGE_BATT_DISABLE;
-	} 
+	}
 
 	if (temp >= TEMP_HOT) {
 		if (temp >= TEMP_CRITICAL)
