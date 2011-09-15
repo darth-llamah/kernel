@@ -114,17 +114,35 @@ struct clkctl_acpu_speed *acpu_mpll = &acpu_freq_tbl[2];
 #ifdef CONFIG_CPU_FREQ_TABLE
 static struct cpufreq_frequency_table freq_table[ARRAY_SIZE(acpu_freq_tbl)];
 
+
 static void __init acpuclk_init_cpufreq_table(void)
 {
-	int allowed_speeds[]={245760,384000,576000,768000,998400,1113600};
-	int i,j;
-
+	int i;
+	int vdd;
 	for (i = 0; acpu_freq_tbl[i].acpu_khz; i++) {
 		freq_table[i].index = i;
 		freq_table[i].frequency = CPUFREQ_ENTRY_INVALID;
-		for(j=0;j<ARRAY_SIZE(allowed_speeds);j++)
-			if(acpu_freq_tbl[i].acpu_khz==allowed_speeds[j])
-				freq_table[i].frequency = acpu_freq_tbl[i].acpu_khz;
+
+		/* Define speeds that we want to skip */
+		if (/* acpu_freq_tbl[i].acpu_khz == 256000 || */
+				acpu_freq_tbl[i].acpu_khz == 19200 ||
+				acpu_freq_tbl[i].acpu_khz == 76800 ||
+				//acpu_freq_tbl[i].acpu_khz == 128000 ||
+				//acpu_freq_tbl[i].acpu_khz == 245000 ||
+				acpu_freq_tbl[i].acpu_khz == 256000)
+			continue;
+
+		vdd = acpu_freq_tbl[i].vdd;
+		/* Allow mpll and the first scpll speeds */
+		if (acpu_freq_tbl[i].acpu_khz == acpu_mpll->acpu_khz ||
+				acpu_freq_tbl[i].acpu_khz == 384000) {
+			freq_table[i].frequency = acpu_freq_tbl[i].acpu_khz;
+			continue;
+		}
+
+		/* Add to the table */
+		//if (vdd != acpu_freq_tbl[i + 1].vdd)
+			freq_table[i].frequency = acpu_freq_tbl[i].acpu_khz;
 	}
 
 	freq_table[i].index = i;
