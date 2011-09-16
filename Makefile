@@ -188,7 +188,7 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ \
 # Default value for CROSS_COMPILE is not to prefix executables
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 SUBARCH := arm
-CROSS_COMPILE=~/android/prebuilt/linux-x86/toolchain/arm-eabi-4.4.0/bin/arm-eabi-
+CROSS_COMPILE=/home/matus/android/prebuilt/linux-x86/toolchain/arm-eabi-4.4.0/bin/arm-eabi-
 export KBUILD_BUILDHOST := $(SUBARCH)
 ARCH		?= $(SUBARCH)
 CROSS_COMPILE	?= arm-eabi-
