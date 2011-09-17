@@ -116,7 +116,7 @@ static struct cpufreq_frequency_table freq_table[ARRAY_SIZE(acpu_freq_tbl)];
 
 static void __init acpuclk_init_cpufreq_table(void)
 {
-	int allowed_speeds[]={128000,245760,384000,499200,576000,614400,691200,768000,844800,921600,998400,1036800,1075200,1113600};
+	int allowed_speeds[]={245760,384000,499200,576000,614400,691200,768000,844800,921600,998400,1036800,1075200,1113600};
 	int i,j;
 
 	for (i = 0; acpu_freq_tbl[i].acpu_khz; i++) {
