@@ -1,0 +1,7 @@
+#!/system/bin/sh
+make -j4;
+cp drivers/net/wireless/bcm4329/bcm4329.ko ../bcm4329.ko;
+make clean;
+make -j4 CFLAGS=-"-O3 -DSP -DROLL";
+cp arch/arm/boot/zImage ../zImage;
+make clean;
