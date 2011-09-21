@@ -480,7 +480,7 @@ config AXI_SCREEN_POLICY
   help
       Simple AXI scaling based on screen ON/OFF and PWRC.
 
-	  config QSD_SVS
+config QSD_SVS
 	bool "QSD Static Voltage Scaling"
 	depends on (ARCH_MSM_SCORPION)
 	default y
