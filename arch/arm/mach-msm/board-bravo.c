@@ -429,9 +429,9 @@ static struct regulator_init_data tps65023_data[5] = {
 	{
 		.constraints = {
 			.name = "dcdc1", /* VREG_MSMC2_1V29 */
-			.min_uV = BRAVO_TPS65023_MIN_UV_MV * 1000,
-			.max_uV = BRAVO_TPS65023_MAX_UV_MV * 1000,
-			.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE,
+		.min_uV = 850000,
+		.max_uV = 1300000,
+		.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE,
 		},
 		.consumer_supplies = tps65023_dcdc1_supplies,
 		.num_consumer_supplies = ARRAY_SIZE(tps65023_dcdc1_supplies),
