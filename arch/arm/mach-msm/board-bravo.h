@@ -20,14 +20,6 @@
 
 #include <mach/board.h>
 
-#ifdef CONFIG_MSM_CPU_AVS
- #define MAHIMAHI_MIN_UV_MV      800
- #define MAHIMAHI_MAX_UV_MV      1275
-#else
- #define MAHIMAHI_MIN_UV_MV      975
- #define MAHIMAHI_MAX_UV_MV      1275
-#endif
-
 #define MSM_SMI_BASE		0x02B00000
 #define MSM_SMI_SIZE		0x01500000
 
@@ -179,6 +171,10 @@
 #define BRAVO_LCD_VSYNC              (136)
 #define BRAVO_LCD_HSYNC              (137)
 #define BRAVO_LCD_DE                 (138)
+
+#define BRAVO_TPS65023_MIN_UV_MV    (800)
+#define BRAVO_TPS65023_MAX_UV_MV    (1350)
+
 
 /* know revision
    0x02 = GSM amoled (dev phone)
