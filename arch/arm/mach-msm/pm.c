@@ -34,9 +34,6 @@
 #include "acpuclock.h"
 #include "proc_comm.h"
 #include "clock.h"
-#ifdef CONFIG_MSM_CPU_AVS
-#include "avs.h"
-#endif // CONFIG_MSM_CPU_AVS
 #ifdef CONFIG_HAS_WAKELOCK
 #include <linux/wakelock.h>
 #endif
@@ -305,11 +302,6 @@ static int msm_sleep(int sleep_mode, uint32_t sleep_delay, int from_idle)
 		printk(KERN_INFO "msm_sleep(): mode %d delay %u idle %d\n",
 		       sleep_mode, sleep_delay, from_idle);
 
-#ifdef CONFIG_MSM_CPU_AVS
-	//	if(avs_enabled() && !from_idle)
-	//	avs_set_default_vdds();
-#endif // CONFIG_MSM_CPU_AVS
-
 #ifndef CONFIG_ARCH_MSM_SCORPION
 	switch (sleep_mode) {
 	case MSM_PM_SLEEP_MODE_POWER_COLLAPSE:
@@ -448,12 +440,6 @@ static int msm_sleep(int sleep_mode, uint32_t sleep_delay, int from_idle)
 			msm_fiq_exit_sleep();
 			local_fiq_enable();
 			rv = 0;
-						// after power collapse the avs delays need to be reinitialised
-#ifdef CONFIG_MSM_CPU_AVS
-			//if(avs_enabled()) {
-			//	avs_enable(1);
-			//}
-#endif // CONFIG_MSM_CPU_AVS
 		}
 		if (msm_pm_debug_mask & MSM_PM_DEBUG_POWER_COLLAPSE)
 			printk(KERN_INFO "msm_pm_collapse(): returned %d\n",
@@ -473,7 +459,7 @@ static int msm_sleep(int sleep_mode, uint32_t sleep_delay, int from_idle)
 			printk(KERN_INFO "msm_sleep(): exit power collapse %ld"
 			       "\n", pm_saved_acpu_clk_rate);
 #if defined(CONFIG_ARCH_QSD8X50)
-    if (acpuclk_set_rate(pm_saved_acpu_clk_rate, SETRATE_SWFI) < 0)
+    if (acpuclk_set_rate(pm_saved_acpu_clk_rate, 1) < 0)
 #else
     if (acpuclk_set_rate(pm_saved_acpu_clk_rate,
       from_idle ? SETRATE_PC_IDLE : SETRATE_PC) < 0)
@@ -595,7 +581,7 @@ void arch_idle(void)
 			printk(KERN_DEBUG "msm_sleep: clk swfi -> %ld\n",
 				saved_rate);
 #if defined(CONFIG_ARCH_QSD8X50)
-    if (saved_rate && acpuclk_set_rate(saved_rate, SETRATE_SWFI) < 0)
+    if (saved_rate && acpuclk_set_rate(saved_rate, 1) < 0)
 #else
     if (saved_rate
         && acpuclk_set_rate(saved_rate, SETRATE_SWFI) < 0)
