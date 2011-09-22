@@ -181,7 +181,7 @@
 */
 
 #define is_cdma_version(rev) (rev == 0x05)
-#define BRAVO_TPS65023_MIN_UV_MV    (800)
+#define BRAVO_TPS65023_MIN_UV_MV    (900)
 #define BRAVO_TPS65023_MAX_UV_MV    (1250)
 #define BRAVO_TPS65023_UV_STEP_MV   (25)
 
