@@ -712,6 +712,25 @@ static ssize_t store_vdd_levels(struct cpufreq_policy *policy, const char *buf, 
 
 	return count;
 }
+
+extern unsigned int acpuclk_get_vdd_min(void);
+static ssize_t show_vdd_min(struct cpufreq_policy *policy, char *buf)
+{
+	return sprintf(buf, "%u\n", acpuclk_get_vdd_min());
+}
+
+extern unsigned int acpuclk_get_vdd_max(void);
+static ssize_t show_vdd_max(struct cpufreq_policy *policy, char *buf)
+{
+	return sprintf(buf, "%u\n", acpuclk_get_vdd_max());
+}
+
+extern unsigned int acpuclk_get_vdd_step(void);
+static ssize_t show_vdd_step(struct cpufreq_policy *policy, char *buf)
+{
+	return sprintf(buf, "%u\n", acpuclk_get_vdd_step());
+}
+
 #endif // VDD_LEVELS
 
 
