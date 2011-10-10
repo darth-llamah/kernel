@@ -72,8 +72,8 @@ struct clkctl_acpu_speed {
 #define SRC_PLL1	3 /* 768 MHz */
 
 struct clkctl_acpu_speed acpu_freq_tbl[] = {
-        {  19200, CCTL(CLK_TCXO, 1),            SRC_RAW, 0, 0, 975, 14000 },
-        { 128000, CCTL(CLK_TCXO, 1),            SRC_AXI, 0, 0, 975, 14000 },
+        {  61440, CCTL(CLK_MODEM_PLL, 4),       SRC_RAW, 0, 0, 975, 14000 },
+        { 122880, CCTL(CLK_MODEM_PLL, 2),       SRC_RAW, 0, 0, 975, 29000 },
         { 245760, CCTL(CLK_MODEM_PLL, 1),       SRC_RAW, 0, 0, 1000, 29000 },
         /* Work arround for acpu resume hung, GPLL is turn off by arm9 */
         /*{ 256000, CCTL(CLK_GLOBAL_PLL, 3),      SRC_RAW, 0, 0, 1000, 29000 },*/
@@ -116,7 +116,7 @@ static struct cpufreq_frequency_table freq_table[ARRAY_SIZE(acpu_freq_tbl)];
 
 static void __init acpuclk_init_cpufreq_table(void)
 {
-	int allowed_speeds[]={128000,245760,384000,499200,576000,614400,691200,768000,844800,921600,998400,1036800,1075200,1113600};
+	int allowed_speeds[]={61440,122880,245760,384000,499200,576000,614400,691200,768000,844800,921600,998400,1036800,1075200,1113600};
 	int i,j;
 
 	for (i = 0; acpu_freq_tbl[i].acpu_khz; i++) {
